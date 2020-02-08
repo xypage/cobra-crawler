@@ -18,15 +18,15 @@ import curses
 #snakeCharater = 'x'
 #foodCharacter = 'f'
 
-s = curses.initscr()
-curses.curs_set(0)
-sh, sw = s.getmaxyx()
-w = curses.newwin(sh, sw, 0, 0)
-w.keypad(1)
-w.timeout(100)
+s = curses.initscr()    #initialize the screen.
+curses.curs_set(0)      #turn off the curser.
+sh, sw = s.getmaxyx()   #set height and width values of screento sh, sw.
+w = curses.newwin(sh, sw, 0, 0) #open a new window with the height and width of sh and sw, set the 'curser' to zero zero.
+w.keypad(1)             #turns the keypad on. Allows the function keys to be interpreted. (the arrow keys are function keys). (Values that are higher than 256 ascii)
+w.timeout(100)          #pauses the program for 100ms. if the value is negative the it will timeout until the next input.
 
-snk_x = sw/4
-snk_y = sh/2
+snk_x = sw/4            #snk_x is 1/4 of the s width.
+snk_y = sh/2            #snk_y is half of the s height.
 snake = [
     [snk_y, snk_x],
     [snk_y, snk_x-1],
@@ -36,10 +36,10 @@ snake = [
 food = [sh/2, sw/2]
 w.addch(int(food[0]), int(food[1]), 'f')
 
-key = curses.KEY_RIGHT
+key = curses.KEY_RIGHT  #assign key to be a KEY constant. (Should work no matter what is entered here.
 
 while True:
-    next_key = w.getch()
+    next_key = w.getch()    #get character. if not enough delay then -1 is returned when there isno input. otherwise it waits for key to be pressed.
     key = key if next_key == -1 else next_key
 
     if snake[0][0] in [0, sh] or snake[0][1]  in [0, sw] or snake[0] in snake[1:]:
@@ -53,9 +53,9 @@ while True:
     if key == curses.KEY_UP:
         new_head[0] -= 1
     if key == curses.KEY_LEFT:
-        new_head[1] -= 1
+        new_head[1] -= 2    #This is going to change the distance between the horizontal  left
     if key == curses.KEY_RIGHT:
-        new_head[1] += 1
+        new_head[1] += 2    #change the distance of the horizontal right
 
     snake.insert(0, new_head)
 

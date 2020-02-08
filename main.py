@@ -7,7 +7,7 @@
 
 # Check out this resource
 # https://docs.python.org/3/howto/curses.html
-
+# https://www.devdungeon.com/content/curses-programming-python#toc-8
 # TODO: Get board drawn so that characters are as tall as they are wide (i.e. a board made of squares)
 # TODO: Draw actual walls
 # TODO: Use inhertiance to put all the drawing functions outside of main.py (e.g. in draw.py)

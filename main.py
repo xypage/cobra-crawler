@@ -8,8 +8,15 @@
 # Check out this resource
 # https://docs.python.org/3/howto/curses.html
 
+# TODO: Get board drawn so that characters are as tall as they are wide (i.e. a board made of squares)
+# TODO: Draw actual walls
+# TODO: Use inhertiance to put all the drawing functions outside of main.py (e.g. in draw.py)
+
 import random
 import curses
+
+#snakeCharater = 'x'
+#foodCharacter = 'f'
 
 s = curses.initscr()
 curses.curs_set(0)
@@ -27,7 +34,7 @@ snake = [
 ]
 
 food = [sh/2, sw/2]
-w.addch(int(food[0]), int(food[1]), curses.ACS_PI)
+w.addch(int(food[0]), int(food[1]), 'f')
 
 key = curses.KEY_RIGHT
 
@@ -60,11 +67,11 @@ while True:
                 random.randint(1, sw-1)
             ]
             food = nf if nf not in snake else None
-        w.addch(food[0], food[1], curses.ACS_PI)
+        w.addch(food[0], food[1], 'f')
     else:
         tail = snake.pop()
         w.addch(int(tail[0]), int(tail[1]), ' ')
 
-    w.addch(int(snake[0][0]), int(snake[0][1]), curses.ACS_CKBOARD)
+    w.addch(int(snake[0][0]), int(snake[0][1]), 'x')
 
 # Code originated from https://github.com/engineer-man/youtube/blob/master/015/snake.py

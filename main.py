@@ -61,10 +61,11 @@ while True:
 
     if snake[0] == food:
         food = None
+        
         while food is None:
             nf = [
                 random.randint(1, sh-1),
-                random.randint(1, sw-1)
+                random.randrange(1, sw-1, 2)
             ]
             food = nf if nf not in snake else None
         w.addch(food[0], food[1], 'f')

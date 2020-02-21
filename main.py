@@ -59,7 +59,9 @@ while True:
 
     snake.insert(0, new_head)
 
-    if snake[0] == food:
+    if snake[0] == food or (snake[0][0] == food[0] and snake[1][0] == food[0] and (snake[0][1] + snake[1][1]) / 2 == food[1]):
+        if(snake[0] != food):
+            w.addch(int(food[0]), int(food[1]), ' ')
         food = None
         
         while food is None:

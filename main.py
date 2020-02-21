@@ -38,9 +38,22 @@ w.addch(int(food[0]), int(food[1]), 'f')
 
 key = curses.KEY_RIGHT  #assign key to be a KEY constant. (Should work no matter what is entered here.
 
+def key_check(current_key, proposed_key):
+    if(proposed_key == -1):
+        return current_key
+    elif current_key == curses.KEY_RIGHT:
+        return current_key if proposed_key == curses.KEY_LEFT else proposed_key
+    elif current_key == curses.KEY_LEFT:
+        return current_key if proposed_key == curses.KEY_RIGHT else proposed_key
+    elif current_key == curses.KEY_DOWN :
+        return current_key if proposed_key == curses.KEY_UP else proposed_key
+    else:
+        return current_key if proposed_key == curses.KEY_DOWN else proposed_key
+        
+
 while True:
     next_key = w.getch()    #get character. if not enough delay then -1 is returned when there isno input. otherwise it waits for key to be pressed.
-    key = key if next_key == -1 else next_key
+    key = key_check(key, next_key)
 
     if snake[0][0] in [0, sh] or snake[0][1]  in [0, sw] or snake[0] in snake[1:]:
         curses.endwin()

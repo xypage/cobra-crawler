@@ -3,7 +3,18 @@ class snake:
     sh = sw = snk_x = snk_y = size = 0
     snake_arr = [[0, 0]]
     w = screen = None
-    
+
+    def __init__(self, args): #w, sh, sw, screen
+        self.w, self.sh, self.sw = args
+        self.snk_x = args[2]/4            #snk_x is 1/4 of the s width.
+        self.snk_y = args[1]/2            #snk_y is half of the s height.
+        self.snake_arr = [
+            [self.snk_y, self.snk_x],
+            [self.snk_y, self.snk_x-1],
+            [self.snk_y, self.snk_x-2]
+        ]
+        self.size = 3
+        
     def feed(self):
         self.size += 1
         
@@ -23,12 +34,6 @@ class snake:
             new_head[1] += 2
 
         if new_head[0] in [0, self.sh] or new_head[1] in [0, self.sw] or new_head in self.snake_arr[1:]:
-            if new_head[0] in [0,sh]:
-                print(1)
-            elif new_head[1] in [0,sw]:
-                print(2)
-            else:
-                print(3)
             return -1
         self.snake_arr.insert(0, new_head)
         if(len(self.snake_arr) > self.size):
@@ -37,15 +42,4 @@ class snake:
         return self.snake_arr
     
     
-def make_snake(args): #w, sh, sw, screen
-    s = snake()
-    s.w, s.sh, s.sw = args
-    s.snk_x = args[2]/4            #snk_x is 1/4 of the s width.
-    s.snk_y = args[1]/2            #snk_y is half of the s height.
-    s.snake_arr = [
-        [s.snk_y, s.snk_x],
-        [s.snk_y, s.snk_x-1],
-        [s.snk_y, s.snk_x-2]
-    ]
-    s.size = 3
-    return s
+

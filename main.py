@@ -15,6 +15,7 @@
 import random
 import curses
 import snake
+import draw
 
 #snakeCharater = 'x'
 #foodCharacter = 'f'
@@ -25,38 +26,32 @@ sh, sw = screen.getmaxyx()   #set height and width values of screento sh, sw.
 w = curses.newwin(sh, sw, 0, 0) #open a new window with the height and width of sh and sw, set the 'cursor' to zero zero.
 w.keypad(1)             #turns the keypad on. Allows the function keys to be interpreted. (the arrow keys are function keys). (Values that are higher than 256 ascii)
 w.timeout(100)          #pauses the program for 100ms. if the value is negative the it will timeout until the next input.
-s = snake.make_snake([w, sh, sw])       #gives values to snake
+
+d = draw.draw(w, sh, sw)
+s = snake.snake([w, sh, sw])       #gives values to snake
 
 food = [sh/2, sw/2]
 w.addch(int(food[0]), int(food[1]), 'f')
 
 key = curses.KEY_RIGHT  #assign key to be a KEY constant. (Should work no matter what is entered here.
 
+
 def key_check(current_key, proposed_key):
-    if(proposed_key == -1):
-        return current_key
-    elif current_key == curses.KEY_RIGHT:
-        return current_key if proposed_key == curses.KEY_LEFT else proposed_key
-    elif current_key == curses.KEY_LEFT:
-        return current_key if proposed_key == curses.KEY_RIGHT else proposed_key
-    elif current_key == curses.KEY_DOWN :
-        return current_key if proposed_key == curses.KEY_UP else proposed_key
-    else:
-        return current_key if proposed_key == curses.KEY_DOWN else proposed_key
-        
+    return {
+        -1: current_key,
+        curses.KEY_RIGHT: 1 if current_key == 1 else 3,
+        curses.KEY_LEFT: 3 if current_key == 3 else 1,
+        curses.KEY_DOWN: 2 if current_key == 2 else 0,
+        curses.KEY_UP: 0 if current_key == 0 else 2
+        }[proposed_key]
 
 while True:
     next_key = w.getch()    #get character. if not enough delay then -1 is returned when there isno input. otherwise it waits for key to be pressed.
     key = key_check(key, next_key)
 
-    snake = s.move({
-            curses.KEY_DOWN: 0,
-            curses.KEY_LEFT: 1,
-            curses.KEY_UP: 2,
-            curses.KEY_RIGHT: 3
-        }[key])
+    snake = s.move(key)
     if snake == -1:
-        quit()
+        break
 
     if snake[0] == food or (snake[0][0] == food[0] and snake[1][0] == food[0] and (snake[0][1] + snake[1][1]) / 2 == food[1]):
         s.feed()
@@ -69,8 +64,17 @@ while True:
                 random.randrange(1, sw-1, 2)
             ]
             food = nf if (nf not in snake and not (snake[0][0] == nf[0] and snake[1][0] == nf[0] and (snake[0][1] + snake[1][1]) / 2 == nf[1])) else None
-        w.addch(food[0], food[1], 'f')
+        d.display([food[0], food[1]], 'f')
 
-    w.addch(int(snake[0][0]), int(snake[0][1]), 'x')
+    d.display([int(snake[0][0]), int(snake[0][1])], 'x')
 
+
+
+d.clear()
+d.type([int(sh / 2), int(sw / 2)], "Game over")
+d.type([int(sh / 2) + 1, int(sw / 2)], "Score: " + str(s.size - 3))
+next_key = -1
+while(next_key == -1):
+    next_key = w.getch()
+quit()
 # Code originated from https://github.com/engineer-man/youtube/blob/master/015/snake.py
